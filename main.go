@@ -44,6 +44,16 @@ func bookById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, book)
 }
 
+//Get book by id do tipo string, retornando um ponteiro para book e retornando error
+func getBookById(id string) (*book, error) {
+	for i, b := range books {
+		if b.ID == id { //checar se o bookId é igual ao id
+			return &books[i], nil
+		}
+	}
+	return nil, errors.New("Book not found.")
+}
+
 func checkoutBook(c *gin.Context) {
 	id, ok := c.GetQuery("id")
 
@@ -83,16 +93,6 @@ func returnBook(c *gin.Context) {
 
 	book.Quantity += 1
 	c.IndentedJSON(http.StatusOK, book)
-}
-
-//Get book by id do tipo string, retornando um ponteiro para book e retornando error
-func getBookById(id string) (*book, error) {
-	for i, b := range books {
-		if b.ID == id { //checar se o bookId é igual ao id
-			return &books[i], nil
-		}
-	}
-	return nil, errors.New("Book not found.")
 }
 
 //Função para adicionar livros à slice.
